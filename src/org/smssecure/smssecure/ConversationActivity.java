@@ -1012,7 +1012,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     if (rawText.length() < 1 && !attachmentManager.isAttachmentPresent())
       throw new InvalidMessageException(getString(R.string.ConversationActivity_message_is_empty_exclamation));
 
-    if (!isEncryptedConversation && AutoInitiate.isTaggable(rawText))
+    String recipientNumber = getRecipients().getPrimaryRecipient().getNumber();
+    Log.w(TAG, "Sending message to: "+recipientNumber);
+    if (!isEncryptedConversation && AutoInitiate.isTaggable(rawText, recipientNumber))
       rawText = AutoInitiate.getTaggedMessage(rawText);
 
     return rawText;

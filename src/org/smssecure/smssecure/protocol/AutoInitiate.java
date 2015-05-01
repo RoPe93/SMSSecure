@@ -11,12 +11,17 @@ import org.smssecure.smssecure.crypto.SessionUtil;
 import org.smssecure.smssecure.recipients.Recipient;
 
 public class AutoInitiate {
+  private static final String TAG = AutoInitiate.class.getSimpleName();
 
   public static final String WHITESPACE_TAG = "             ";
 
-  public static boolean isTaggable(String message) {
+  public static boolean isTaggable(String message, String recipientNumber) {
+    String nationalNumber = recipientNumber.replaceAll("\\+[0-9][0-9]", "0").replaceAll("\\D", "");
+    Log.w(TAG, "National number is: " + nationalNumber);
+
     return message.matches(".*[^\\s].*") &&
-           message.replaceAll("\\s+$", "").length() + WHITESPACE_TAG.length() <= 158;
+           message.replaceAll("\\s+$", "").length() + WHITESPACE_TAG.length() <= 158 &&
+           nationalNumber.length() >= 7;
   }
 
   public static boolean isTagged(String message) {
